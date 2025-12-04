@@ -2,8 +2,6 @@
 .eslintcache
 *.log*
 .prettierignore
-go.mod
-go.sum
 .env
 tmp
 .vercel
