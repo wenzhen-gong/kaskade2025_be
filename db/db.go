@@ -20,8 +20,8 @@ func Init() *gorm.DB {
 		os.Getenv("DB_NAME"),
 		os.Getenv("DB_PORT"),
 	)
-
-	db, err := gorm.Open(postgres.Open(dsn))
+	fmt.Print(dsn)
+	db, err := gorm.Open(postgres.Open("host=aws-1-us-east-2.pooler.supabase.com user=postgres.oesnfmrbxmegobtcaozy password=SWrtmbw4yrNHsruf dbname=postgres port=5432 sslmode=require"))
 	if err != nil {
 		log.Fatalf("❌ Failed to connect database: %v", err)
 	}
