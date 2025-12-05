@@ -1,13 +1,5 @@
 {
-  "functions": {
-    "main.go": {
-      "runtime": "vercel-go@2.0.2"
-    }
-  },
-  "builds": [
-    { "src": "main.go", "use": "vercel-go" }
-  ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/api/server" }
+    { "source": "/(.*)", "destination": "/api/index.go" }
   ]
 }
