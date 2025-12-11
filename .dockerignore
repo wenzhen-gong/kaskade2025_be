@@ -1,0 +1,42 @@
+# Git
+.git
+.gitignore
+
+# 构建产物
+tmp/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+main
+
+# 测试文件
+*_test.go
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 环境变量文件（Cloud Run 会通过环境变量提供）
+.env
+.env.local
+
+# 日志
+*.log
+build-errors.log
+
+# Vercel 相关
+.vercel
+vercel.json
+
+# API 目录（如果不需要）
+api/
+
+# 其他
+README.md
+.DS_Store
+
