@@ -47,6 +47,7 @@ type RequestHistory struct {
 }
 type BenchmarkResult struct {
 	ID           uint           `gorm:"primaryKey" json:"id"`
+	UserID       uuid.UUID      `gorm:"type:uuid;index" json:"user_id"`
 	Timestamp    time.Time      `gorm:"autoCreateTime" json:"timestamp"`
 	SessionID    string         `gorm:"type:varchar(100)" json:"session_id"`
 	Version      string         `gorm:"type:varchar(50)" json:"version"`
@@ -61,6 +62,7 @@ type BenchmarkResult struct {
 // BenchmarkResultSummary is used for API responses that only need summary information
 type BenchmarkResultSummary struct {
 	ID           uint      `json:"id"`
+	UserID       uuid.UUID `json:"userId"`
 	Timestamp    time.Time `json:"timestamp"`
 	SessionID    string    `json:"sessionId"`
 	Version      string    `json:"version"`

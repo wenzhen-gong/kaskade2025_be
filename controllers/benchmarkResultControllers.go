@@ -9,11 +9,13 @@ import (
 	"kaskade_backend/models"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
 type addBenchmarkResultRequest struct {
+	UserID    uuid.UUID              `json:"userId" binding:"required"`
 	SessionID string                 `json:"sessionId" binding:"required"`
 	Version   string                 `json:"version" binding:"required"`
 	Config    map[string]interface{} `json:"config" binding:"required"`
@@ -100,6 +102,7 @@ func AddBenchmarkResult(c *gin.Context, db *gorm.DB) {
 	successRatio, p50Latency, p95Latency, throughput := extractSummaryMetrics(resultJSON, configJSON)
 
 	record := models.BenchmarkResult{
+		UserID:       req.UserID,
 		SessionID:    req.SessionID,
 		Version:      req.Version,
 		Config:       configJSON,
@@ -117,6 +120,7 @@ func AddBenchmarkResult(c *gin.Context, db *gorm.DB) {
 
 	summary := models.BenchmarkResultSummary{
 		ID:           record.ID,
+		UserID:       record.UserID,
 		Timestamp:    record.Timestamp,
 		SessionID:    record.SessionID,
 		Version:      record.Version,
@@ -148,6 +152,11 @@ func GetBenchmarkResults(c *gin.Context, db *gorm.DB) {
 		if idMax, err := strconv.ParseUint(idMaxStr, 10, 32); err == nil {
 			query = query.Where("id <= ?", idMax)
 		}
+	}
+
+	// User ID exact match (optional)
+	if userID := c.Query("userId"); userID != "" {
+		query = query.Where("user_id = ?", userID)
 	}
 
 	// SessionID exact match (optional)
@@ -193,6 +202,7 @@ func GetBenchmarkResults(c *gin.Context, db *gorm.DB) {
 	for i, result := range results {
 		summaries[i] = models.BenchmarkResultSummary{
 			ID:           result.ID,
+			UserID:       result.UserID,
 			Timestamp:    result.Timestamp,
 			SessionID:    result.SessionID,
 			Version:      result.Version,
