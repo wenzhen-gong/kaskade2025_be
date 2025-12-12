@@ -13,12 +13,13 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal(err)
-	}
+	// 尝试加载 .env（本地开发用），Cloud Run 会忽略这个错误
+	_ = godotenv.Load()
 
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Cloud Run 默认端口
+	}
 	// Connect to db
 	DB := db.Init() // 初始化数据库 + 自动迁移
 	// Create router using gin
